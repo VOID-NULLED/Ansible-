@@ -1,0 +1,23 @@
+---
+- hosts: apache
+  become: yes
+  tasks:
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Start and enable Apache service
+      systemd:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Create index.html
+      copy:
+        content: "<html><body><h1>Welcome to CTPL- Apache</h1></body></html>"
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
